@@ -3,5 +3,5 @@
   "kind": "cli",
   "setup": [],
   "verify": ["python3", "-B", "handoff.py", "verify"],
-  "demo": ["python3", "-B", "handoff.py", "demo"]
+  "demo": ["python3", "-B", "order_examples.py", "demo"]
 }

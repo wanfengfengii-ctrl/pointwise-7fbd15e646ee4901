@@ -9,6 +9,7 @@ from pathlib import Path
 from sqlite3 import Connection
 
 from archive.export import fetch_package, write_package
+from archive.orders import initialize_orders
 from archive.schema import initialize_archive
 from catalog.lifecycle import retire_source
 from catalog.schema import initialize_catalog, open_catalog, write_transaction
@@ -31,6 +32,7 @@ def initialize(db: Connection) -> None:
         initialize_catalog(db)
         initialize_archive(db)
         initialize_receipts(db)
+        initialize_orders(db)
 
 
 def _verify() -> int:
@@ -39,7 +41,21 @@ def _verify() -> int:
     failed_checks = {case.id() for case, _ in outcome.failures}
     if not outcome.errors and failed_checks & _WINDOW_CHECKS:
         print('WINDOW_HANDOFF_MISMATCH', file=sys.stderr)
-    return 0 if outcome.wasSuccessful() else 1
+    if not outcome.wasSuccessful():
+        return 1
+    return _verify_orders()
+
+
+def _verify_orders() -> int:
+    """Run the whole-order joint checks after the unit regression passes."""
+    import order_examples
+    try:
+        order_examples.baseline()
+        order_examples.orders(verify=True)
+    except Exception as exc:
+        print(f'ORDER_HANDOFF_MISMATCH: {exc}', file=sys.stderr)
+        return 1
+    return 0
 
 
 def _report_as_json(payload: bytes) -> dict:

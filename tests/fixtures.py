@@ -31,6 +31,15 @@ def publication_records(db: Connection) -> tuple[list, list]:
     )
 
 
+def order_records(db: Connection) -> tuple[list, list]:
+    return (
+        db.execute('''SELECT order_id, revision_id, start_row, stop_row, manifest
+                      FROM order_manifests ORDER BY order_id''').fetchall(),
+        db.execute('''SELECT order_id, station, payload
+                      FROM order_volumes ORDER BY order_id, station''').fetchall(),
+    )
+
+
 def source_records(db: Connection) -> tuple[list, list]:
     return (
         db.execute('''SELECT revision_id, batch_id, declared_revision, observations, retired
