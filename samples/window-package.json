@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "revision_id": 12,
+  "start": 1,
+  "stop": 2,
+  "rows": [{"row_number": 108, "trays": [[{}, {}], [], null]}],
+  "temperature": [[2, 7]],
+  "pressure": [[1, 9]]
+}

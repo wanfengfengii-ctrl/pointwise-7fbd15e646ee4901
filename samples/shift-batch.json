@@ -1,0 +1,10 @@
+{
+  "batch_id": "LF-2026-11-18-day",
+  "revision": "device-export",
+  "rows": [
+    {"row_number": 101, "trays": [[{}]]},
+    {"row_number": 108, "trays": [[{}, {}], [], null]}
+  ],
+  "temperature": [[1, 41], [2, 7]],
+  "pressure": [[2, 9]]
+}
